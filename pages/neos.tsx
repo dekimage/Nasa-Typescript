@@ -8,6 +8,7 @@ import DateRangePicker from "@mui/lab/DateRangePicker";
 import Box from "@mui/material/Box";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import Link from "next/link";
+import { List } from "react-virtualized";
 
 import styles from "../styles/Neos.module.css";
 
@@ -63,6 +64,24 @@ export default function Neo() {
     fetcher(url, dateRange)
   );
 
+  interface renderRowProps {
+    index: number,
+    key: number,  
+    style: React.CSSProperties, 
+    parent: any
+  }
+
+  const renderRow: React.FC<renderRowProps> = ({ index, key, style, parent }) => {
+    const asteroids = parent.props.asteroidList;
+    return (
+      <div>
+        <div key={key} style={style}>
+          <NearObject object={asteroids[index]} />
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div>
       <div className={styles.datePicker}>
@@ -92,12 +111,18 @@ export default function Neo() {
       {data && (
         <div className={styles.container}>
           {Object.keys(data.near_earth_objects).map((date, i) => {
+            const asteroidListPerDate = data.near_earth_objects[date];
             return (
               <div key={i}>
                 <span>{date}</span>
-                {data.near_earth_objects[date].map((object: any) => (
-                  <NearObject object={object} />
-                ))}
+                 <List
+                  width={200}
+                  height={600}
+                  rowRenderer={renderRow}
+                  rowCount={asteroidListPerDate.length}
+                  rowHeight={60}
+                  asteroidList={asteroidListPerDate}
+                />
               </div>
             );
           })}

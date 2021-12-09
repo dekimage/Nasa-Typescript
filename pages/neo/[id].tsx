@@ -87,7 +87,6 @@ export default function Neo() {
             }}
           />
           <div>
-            <div>moon svg</div>
             <span>Average Moon Distance: {LUNAR_DISTANCE} (Km)</span>
             <div className={styles.line}></div>
             <span>
@@ -100,6 +99,22 @@ export default function Neo() {
                 "--progress": calculateClosestDistance(data.close_approach_data) / LUNAR_DISTANCE,
               } as React.CSSProperties} 
             ></div>
+            <div className={styles.ellipsesBox}>
+            <div className={styles.earth}>
+              <div className={styles.tooltip}>earth</div>
+            </div>
+            <div className={styles.moon}>
+              <div className={styles.tooltip}>moon</div>
+            </div>
+            <div
+              className={styles.asteroid}
+              style={{
+                "--progress": calculateClosestDistance(data.close_approach_data) / LUNAR_DISTANCE,
+              } as React.CSSProperties}
+            >
+              <div className={styles.tooltip}>Asteroid</div>
+            </div>
+          </div>
           </div>
         </div>
       )}
